@@ -1,0 +1,7 @@
+Java 11* LTS or greater required - https://www.oracle.com/java/technologies/javase-downloads.html
+
+pip install discord.py
+pip install lavalink
+pip install spotipy
+
+and have lavalink.jar (already included but watchout for new releases https://github.com/Frederikam/Lavalink/releases )
