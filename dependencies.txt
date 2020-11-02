@@ -4,4 +4,4 @@ pip install discord.py
 pip install lavalink
 pip install spotipy
 
-and have lavalink.jar (already included but watchout for new releases https://github.com/Frederikam/Lavalink/releases )
+and have the latest lavalink.jar (https://github.com/Frederikam/Lavalink/releases)
