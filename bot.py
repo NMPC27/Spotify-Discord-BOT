@@ -25,7 +25,7 @@ from spotipy.oauth2 import SpotifyOAuth
 
 os.environ["SPOTIPY_CLIENT_ID"] = ""    ##put your SPOTIPY_CLIENT_ID here
 os.environ["SPOTIPY_CLIENT_SECRET"] = ""    ##put your SPOTIPY_CLIENT_SECRET here
-os.environ["SPOTIPY_REDIRECT_URI"] = ""     ##put some trustwordy uri ex. http://127.0.0.1/ or http://nmpc27.epizy.com/
+os.environ["SPOTIPY_REDIRECT_URI"] = ""     ##put some trustwordy uri ex. http://127.0.0.1/ or http://nmpc.epizy.com/
 
 scope = "user-read-currently-playing"
 
