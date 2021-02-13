@@ -1,0 +1,9 @@
+Changelog v1.1:
+-code is now indented in tabs, for easier reading and to avoid compiling problems
+-added suport to local music
+
+Known issues v1.1:
+-the command .join is still buggy
+-if a local song has the same name of another local song and they follow each other the bot will not change song (only for local songs)
+-music cuts and dont reach the end (changes song before that)
+
