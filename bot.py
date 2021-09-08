@@ -22,10 +22,17 @@ import time
 import lavalink
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import json
 
-os.environ["SPOTIPY_CLIENT_ID"] = ""    ##put your SPOTIPY_CLIENT_ID here
-os.environ["SPOTIPY_CLIENT_SECRET"] = ""    ##put your SPOTIPY_CLIENT_SECRET here
-os.environ["SPOTIPY_REDIRECT_URI"] = ""     ##put some trustwordy uri ex. http://127.0.0.1/ or http://nmpc.epizy.com/
+
+with open('config.txt') as f:
+	data = f.read()
+  
+js = json.loads(data)
+
+os.environ["SPOTIPY_CLIENT_ID"] = js["SPOTIPY_CLIENT_ID"]	
+os.environ["SPOTIPY_CLIENT_SECRET"] = js["SPOTIPY_CLIENT_SECRET"]
+os.environ["SPOTIPY_REDIRECT_URI"] = js["SPOTIPY_REDIRECT_URI"]	
 
 scope = "user-read-currently-playing"
 
@@ -34,6 +41,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 os.system('start "START Lavalink" cmd /k "java -jar Lavalink.jar"')
 
 bot = commands.Bot(command_prefix=".")
+bot.remove_command('help')
 
 ########################################################################
 
@@ -54,6 +62,11 @@ class MusicCog(commands.Cog):
 		self.play_disc=False
 		self.spotify.start()
 
+	
+	@commands.command(name='help')
+	async def help(self, ctx):
+		await ctx.channel.send("```List of commands: \n .help -> it shows a list of usefull commands \n .play XXX -> it will play the name of the song or Youtube link put in XXX \n .pause -> pauses the current song \n .stop -> stop the current song ```")
+
 
 	@commands.command(name='join')
 	async def join(self, ctx):
@@ -70,18 +83,21 @@ class MusicCog(commands.Cog):
 							 
 	@commands.command(name='pause')
 	async def pause(self, ctx):
+		print("PAUSE")
 		player = self.bot.music.player_manager.get(ctx.guild.id)
 		if not player.paused:
 			await player.set_pause(True)
 		
 	@commands.command(name='resume')
 	async def resume(self, ctx):
+		print("PLAY")
 		player = self.bot.music.player_manager.get(ctx.guild.id)
 		if player.paused:
 			await player.set_pause(False)
 			
 	@commands.command(name='stop')
 	async def stop(self, ctx):
+		print("STOP")
 		player = self.bot.music.player_manager.get(ctx.guild.id)
 		await player.stop()
 
@@ -92,6 +108,8 @@ class MusicCog(commands.Cog):
 			query = f'ytsearch:{query}'
 			results = await player.node.get_tracks(query)
 			track = results['tracks'][0]
+
+			print("playing "+track["info"]["title"]+" in Discord | YOUTUBE SONG")
 			
 			await player.stop()
 			
@@ -126,20 +144,20 @@ class MusicCog(commands.Cog):
 						if(self.musica_disc==dick["item"]["name"]):
 							if(dick["is_playing"]):										
 								if(self.play_disc!=dick["is_playing"]):						
-									print("say PLAY in DISC")		
+									print("PLAY")		
 									player = self.bot.music.player_manager.get(ctx_g.guild.id)
 									if player.paused:
 										await player.set_pause(False)		
 							else:														
 								if(self.play_disc!=dick["is_playing"]):
-									print("say STOP in DISC")
+									print("PAUSE")
 									player = self.bot.music.player_manager.get(ctx_g.guild.id)
 									if not player.paused:
 										await player.set_pause(True)
 							
 						else:
-							print("say -p .................. in DISC ## LOCAL")
 							musica=dick["item"]["name"]
+							print("playing "+musica+" in Discord ## LOCAL SONG")
 							
 							player = self.bot.music.player_manager.get(ctx_g.guild.id)
 							await player.stop()
@@ -165,20 +183,21 @@ class MusicCog(commands.Cog):
 						if(self.musica_disc==dick["item"]["external_urls"]["spotify"]):
 							if(dick["is_playing"]):										
 								if(self.play_disc!=dick["is_playing"]):						
-									print("say PLAY in DISC")		
+									print("PLAY")		
 									player = self.bot.music.player_manager.get(ctx_g.guild.id)
 									if player.paused:
 										await player.set_pause(False)		
 							else:														
 								if(self.play_disc!=dick["is_playing"]):
-									print("say STOP in DISC")
+									print("PAUSE")
 									player = self.bot.music.player_manager.get(ctx_g.guild.id)
 									if not player.paused:
 										await player.set_pause(True)
 							
 						else:
-							print("say -p .................. in DISC")
 							musica=dick["item"]["name"]
+							print("playing "+musica+" in Discord ## ONLINE SONG")
+
 							for i in range(len(dick["item"]["artists"])):
 								musica=musica+" "+dick["item"]["artists"][i]["name"]
 							
@@ -209,4 +228,4 @@ class MusicCog(commands.Cog):
 			print("Use .join command")
 
 
-bot.run("TOKEN")    ##put your discord token here
+bot.run(js["TOKEN"])
