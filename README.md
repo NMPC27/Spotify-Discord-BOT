@@ -16,3 +16,5 @@ Please read dependencies.txt
 
 Execute: python bot.py
 DO NOT USE: python3 bot.py
+
+Now you can use "pyinstaller --onefile -w bot.spec" to build the project
